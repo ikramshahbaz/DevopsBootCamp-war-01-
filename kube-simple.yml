@@ -1,0 +1,14 @@
+---
+- hosts: all
+  become: True
+  tasks:
+  - name: Docker image using war file
+    command: docker build -t ikramshahbaz/simple-devops:1.0 .
+    args:
+      chdir: /opt/docker
+
+  - name: Deploy kube pods
+    command: kubectl create deployment simpledevops --image=ikramshahbaz/simple-devops:1.0
+
+  - name: Deploy kube services
+    command: kubectl apply -f /opt/docker/node-service.yml
